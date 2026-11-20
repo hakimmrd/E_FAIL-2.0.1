@@ -33,6 +33,19 @@
   }));
   document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => showPage(button.dataset.go)));
 
+
+  // Buka/tutup submenu menggunakan klik, termasuk submenu bertingkat.
+  document.querySelectorAll('.sidebar__group > .sidebar__link, .sidebar__group > .sidebar__sublink').forEach(link => {
+    const submenu = link.nextElementSibling;
+    if (!submenu || !submenu.classList.contains('sidebar__submenu')) return;
+
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      link.parentElement.classList.toggle('sidebar__group--open');
+    });
+  });
+  
+
   if (toggle && sidebar) toggle.addEventListener('click', function () {
     const isOpen = sidebar.classList.toggle('sidebar--open');
     toggle.setAttribute('aria-expanded', String(isOpen));

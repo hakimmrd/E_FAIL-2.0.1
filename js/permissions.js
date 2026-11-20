@@ -24,6 +24,7 @@
     pendaftaran: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     penutupan: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     pelupusan: ['Pentadbir', 'Penyelaras'],
+    pemindahan: ['Pentadbir', 'Penyelaras'],
     sejarah: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     laporan: ['Pentadbir', 'Penyelaras'],
     profil: ['Pengguna', 'Pentadbir', 'Penyelaras'],

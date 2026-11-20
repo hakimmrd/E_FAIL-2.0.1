@@ -345,32 +345,35 @@ button{cursor:pointer}
 
 
 /* ==========================================
-   SIDEBAR NESTED DROPDOWN
+   SIDEBAR NESTED DROPDOWN - CLICK
 ========================================== */
 
-/* Hide all submenus by default */
+/* Semua submenu ditutup pada permulaan */
 .sidebar__group > .sidebar__submenu {
     display: none;
 }
 
-/* Show only the direct submenu of the hovered parent */
-.sidebar__group:hover > .sidebar__submenu {
-    display: block;
+/* Buka submenu apabila parent diklik */
+.sidebar__group--open > .sidebar__submenu {
+    display: flex;
+    flex-direction: column;
 }
 
-/* Nested submenu positioning */
-.sidebar__submenu .sidebar__group {
-    position: relative;
+/* Jarak untuk submenu bertingkat */
+.sidebar__submenu .sidebar__submenu {
+    padding-left: 18px;
+    margin-left: 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Keep nested submenu hidden */
-.sidebar__submenu .sidebar__group > .sidebar__submenu {
-    display: none;
+/* Animasi anak panah */
+.sidebar__arrow {
+    margin-left: auto;
+    transition: transform 0.2s ease;
 }
 
-/* Show only the nested submenu of the hovered parent */
-.sidebar__submenu .sidebar__group:hover > .sidebar__submenu {
-    display: block;
+.sidebar__group--open > a .sidebar__arrow {
+    transform: rotate(180deg);
 }
 
 /* Submenu arrow */
@@ -1352,5 +1355,17 @@ body.approval-modal-open{overflow:hidden}
 
 .notification-item:hover {
     background: #f5f5f5;
+}/* ALIGN FIRST-LEVEL SUBMODULES WITH MAIN MODULE */
+.sidebar__submenu--level1 {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    border-left: none !important;
+}.sidebar__sublink .sidebar__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    min-width: 20px;
+    margin-right: 8px;
 }
 

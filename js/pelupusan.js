@@ -8,9 +8,16 @@
    - Sumber aktiviti: Audit Trail
    - Buat masa ini: Fail Umum sahaja
 ========================================== */
+// ==========================================
+// PAGINATION PELUPUSAN
+// ==========================================
+
+let halamanPelupusanSemasa = 1;
+const rekodSetiapHalamanPelupusan = 10;
 
 const TEMPOH_PELUPUSAN_TAHUN = 5;
 const AMARAN_PELUPUSAN_BULAN = 1;
+
 
 
 // ==========================================
@@ -201,79 +208,32 @@ function dapatkanTarikhAsasJilid(jilid, failAsal) {
 }
 
 
+
 // ==========================================
-// 6. DAPATKAN SENARAI JILID FAIL UMUM
+// 6. DAPATKAN SEMUA JILID UNTUK PELUPUSAN
+// SUMBER: MASTERLIST (UMUM + PERIBADI)
 // ==========================================
 
 function binaSenaraiJilidUmumUntukPelupusan() {
-    const failUmum =
-        typeof dapatkanSenaraiFailUmum === "function"
-            ? dapatkanSenaraiFailUmum()
+    const masterlist =
+        typeof dapatkanMasterlist === "function"
+            ? dapatkanMasterlist()
             : [];
 
-    const jilidUmum =
-        typeof dapatkanSenaraiJilidUmum === "function"
-            ? dapatkanSenaraiJilidUmum()
-            : [];
-
-    const hasil = [];
-
-    failUmum.forEach(fail => {
-        const failId = fail.id || fail.failId || "";
-        const noFail = fail.noFail || "";
-
-        const jilidFail = jilidUmum.filter(item =>
-            (failId && String(item.failId) === String(failId)) ||
-            (!failId && String(item.noFail) === String(noFail))
-        );
-
-        const jilidAsal = Number(fail.jilid) || 1;
-
-        const rekodAsal = jilidFail.find(
-            item => Number(item.jilid) === jilidAsal
-        );
-
-        hasil.push({
-            ...fail,
-            ...(rekodAsal || {}),
-            failId,
-            noFail,
-            tajuk: rekodAsal?.tajuk || fail.tajuk || "-",
-            jilid: jilidAsal,
-            kategori: "Fail Umum"
-        });
-
-        jilidFail
-            .filter(item => Number(item.jilid) !== jilidAsal)
-            .forEach(item => {
-                hasil.push({
-                    ...fail,
-                    ...item,
-                    failId: item.failId || failId,
-                    noFail: item.noFail || noFail,
-                    kategori: "Fail Umum"
-                });
-            });
-    });
-
-    // Tambah rekod jilid tanpa rekod induk
-    jilidUmum.forEach(item => {
-        const sudahAda = hasil.some(x =>
-            String(x.failId || "") === String(item.failId || "") &&
-            String(x.noFail || "") === String(item.noFail || "") &&
-            Number(x.jilid) === Number(item.jilid)
-        );
-
-        if (!sudahAda) {
-            hasil.push({
-                ...item,
-                kategori: "Fail Umum"
-            });
-        }
-    });
-
-    return hasil;
+    return masterlist
+        .filter(item =>
+            String(item.statusJilid || "").trim().toLowerCase() === "tidak aktif"
+        )
+        .map(item => ({
+            ...item,
+            kategori:
+                item.kategori ||
+                (item.kategoriKod === "peribadi"
+                    ? "Fail Peribadi"
+                    : "Fail Umum")
+        }));
 }
+
 
 
 // ==========================================
@@ -351,23 +311,20 @@ function kiraStatusPelupusan(jilid, auditSemua, hariIni = new Date()) {
 }
 
 
+
 // ==========================================
 // 8. PAPARKAN SENARAI PELUPUSAN
 // ==========================================
 
 function paparSenaraiPelupusan() {
     const halaman = document.getElementById("page-pelupusan");
-
-    const tbody = halaman?.querySelector(
-        ".panel .data-table tbody"
-    );
+    const tbody = document.getElementById("senaraiPelupusan");
 
     if (!halaman || !tbody) return;
 
-    const audit =
-        typeof dapatkanSenaraiAuditTrail === "function"
-            ? dapatkanSenaraiAuditTrail()
-            : [];
+    const audit = typeof dapatkanSenaraiAuditTrail === "function"
+        ? dapatkanSenaraiAuditTrail()
+        : [];
 
     const hariIni = new Date();
 
@@ -376,28 +333,50 @@ function paparSenaraiPelupusan() {
         kiraan: kiraStatusPelupusan(jilid, audit, hariIni)
     }));
 
-    const untukTindakan = senarai.filter(item =>
-        item.kiraan.status === "Hampir Tempoh" ||
-        item.kiraan.status === "Tempoh Dicapai"
-    );
+    // Susun rekod: hampir tempoh dan tempoh dicapai dahulu
+    const susunan = [...senarai].sort((a, b) => {
+        const keutamaan = {
+            "Tempoh Dicapai": 1,
+            "Hampir Tempoh": 2,
+            "Dalam Tempoh": 3,
+            "Perlu Tarikh Rekod": 4
+        };
 
-    const susunan = [
-        ...untukTindakan,
-        ...senarai.filter(item => !untukTindakan.includes(item))
-    ].sort((a, b) => {
-        const tarikhA =
-            a.kiraan.tarikhLayak?.getTime() ??
-            Number.MAX_SAFE_INTEGER;
+        const bezaStatus =
+            (keutamaan[a.kiraan.status] || 5) -
+            (keutamaan[b.kiraan.status] || 5);
 
-        const tarikhB =
-            b.kiraan.tarikhLayak?.getTime() ??
-            Number.MAX_SAFE_INTEGER;
+        if (bezaStatus !== 0) return bezaStatus;
+
+        const tarikhA = a.kiraan.tarikhLayak?.getTime() ?? Infinity;
+        const tarikhB = b.kiraan.tarikhLayak?.getTime() ?? Infinity;
 
         return tarikhA - tarikhB;
     });
 
-    tbody.innerHTML = susunan.length
-        ? susunan.map(({ jilid, kiraan }) => {
+    // Pagination
+    const jumlahRekod = susunan.length;
+    const jumlahHalaman = Math.max(
+        1,
+        Math.ceil(jumlahRekod / rekodSetiapHalamanPelupusan)
+    );
+
+    halamanPelupusanSemasa = Math.min(
+        Math.max(1, halamanPelupusanSemasa),
+        jumlahHalaman
+    );
+
+    const mula = (halamanPelupusanSemasa - 1) *
+        rekodSetiapHalamanPelupusan;
+
+    const rekodPaparan = susunan.slice(
+        mula,
+        mula + rekodSetiapHalamanPelupusan
+    );
+
+    // Paparkan jadual
+    tbody.innerHTML = rekodPaparan.length
+        ? rekodPaparan.map(({ jilid, kiraan }) => {
             const tahun = kiraan.tarikhLayak
                 ? kiraan.tarikhLayak.getFullYear()
                 : "-";
@@ -409,33 +388,37 @@ function paparSenaraiPelupusan() {
             if (kiraan.status === "Hampir Tempoh") {
                 label = `Amaran awal · ${kiraan.bakiHari} hari lagi`;
                 kelas = "pill--orange";
-                tindakan = "Semak";
+                tindakan = "Hampir layak";
             } else if (kiraan.status === "Tempoh Dicapai") {
-                label = "Tempoh dicapai — semakan";
+                label = "Tempoh dicapai";
                 kelas = "pill--orange";
-                tindakan = "Semak";
+                tindakan = "Untuk semakan";
             } else if (kiraan.status === "Perlu Tarikh Rekod") {
                 label = "Tarikh rekod tiada";
-                tindakan = "Semak rekod";
+                tindakan = "Semak tarikh";
             }
 
-            const butiranJilid = `Jilid ${jilid.jilid || 1}`;
             const noFail = jilid.noFail || "-";
+            const nomborJilid = jilid.jilid || 1;
+            const kategori = jilid.kategori || "-";
 
             const tarikhAsas = kiraan.tarikhTerakhir
-                ? `Aktiviti terakhir: ${formatTarikhPelupusan(kiraan.tarikhTerakhir)}`
+                ? `Tarikh asas: ${formatTarikhPelupusan(kiraan.tarikhTerakhir)}`
                 : "Tarikh asas belum direkodkan";
 
             const tarikhLayak = kiraan.tarikhLayak
-                ? `Tarikh layak: ${formatTarikhPelupusan(kiraan.tarikhLayak)}`
+                ? `Layak: ${formatTarikhPelupusan(kiraan.tarikhLayak)}`
                 : "";
 
             return `
                 <tr>
                     <td>
                         <b>${escapeHTML(noFail)}</b><br>
-                        <small>${escapeHTML(butiranJilid)}</small><br>
                         <small>${escapeHTML(tarikhAsas)}</small>
+                    </td>
+                    <td>
+                        Jilid ${escapeHTML(nomborJilid)}<br>
+                        <small>${escapeHTML(kategori)}</small>
                     </td>
                     <td>${escapeHTML(tahun)}</td>
                     <td>
@@ -450,22 +433,33 @@ function paparSenaraiPelupusan() {
         }).join("")
         : `
             <tr>
-                <td colspan="4" class="muted">
-                    Tiada rekod fail umum untuk dipantau.
+                <td colspan="5" class="muted">
+                    Tiada rekod jilid tidak aktif untuk dipantau.
                 </td>
             </tr>
         `;
 
-    const jumlahEl = halaman.querySelector(
+    // Jumlah keseluruhan rekod
+    const jumlahEl = document.getElementById("jumlahRekodPelupusan");
+
+    if (jumlahEl) {
+        jumlahEl.textContent = `${jumlahRekod} rekod`;
+    }
+
+    // Jumlah rekod yang hampir atau telah mencapai tempoh
+    const untukTindakan = susunan.filter(item =>
+        item.kiraan.status === "Hampir Tempoh" ||
+        item.kiraan.status === "Tempoh Dicapai"
+    );
+
+    const ringkasan = halaman.querySelector(
         ".release-progress__number"
     );
 
-    if (jumlahEl) {
-        jumlahEl.innerHTML = `
+    if (ringkasan) {
+        ringkasan.innerHTML = `
             ${untukTindakan.length}
-            <span style="font-size:10px;color:var(--muted)">
-                fail/jilid untuk semakan
-            </span>
+            <span style="font-size:10px;color:var(--muted)">fail/jilid</span>
         `;
     }
 
@@ -474,16 +468,47 @@ function paparSenaraiPelupusan() {
     );
 
     if (caption) {
-        caption.textContent =
-            "Fail/jilid hampir atau telah mencapai tempoh lima tahun";
+        caption.textContent = "Fail/jilid hampir atau telah mencapai tempoh lima tahun";
     }
-}
 
+    // Maklumat halaman
+    const info = document.getElementById("infoPaginationPelupusan");
+
+    if (info) {
+        const rekodMula = jumlahRekod === 0 ? 0 : mula + 1;
+        const rekodAkhir = Math.min(
+            mula + rekodSetiapHalamanPelupusan,
+            jumlahRekod
+        );
+
+        info.textContent =
+            `Memaparkan ${rekodMula}-${rekodAkhir} daripada ${jumlahRekod} rekod · Halaman ${halamanPelupusanSemasa}/${jumlahHalaman}`;
+    }
+
+    // Kawalan butang pagination
+    const sebelum = document.getElementById("pelupusanSebelum");
+    const seterusnya = document.getElementById("pelupusanSeterusnya");
+
+    if (sebelum) sebelum.disabled = halamanPelupusanSemasa <= 1;
+    if (seterusnya) seterusnya.disabled = halamanPelupusanSemasa >= jumlahHalaman;
+}
 
 // ==========================================
 // 9. JALANKAN SELEPAS HALAMAN DIMUATKAN
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("pelupusanSebelum")?.addEventListener("click", function() {
+        if (halamanPelupusanSemasa > 1) {
+            halamanPelupusanSemasa--;
+            paparSenaraiPelupusan();
+        }
+    });
+
+    document.getElementById("pelupusanSeterusnya")?.addEventListener("click", function() {
+        halamanPelupusanSemasa++;
+        paparSenaraiPelupusan();
+    });
+
     paparSenaraiPelupusan();
 });

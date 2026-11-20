@@ -236,7 +236,7 @@ function dapatkanMasterlist() {
             kategoriKod: kumpulan.kod,
             jenisRekod: "Fail",
             jilid: jilidAsal,
-            statusJilid: "Aktif",
+            statusJilid: fail.statusJilid || "Aktif",
             statusPinjaman: fail.statusPinjaman || "Tersedia"
         });
 
@@ -444,57 +444,72 @@ function kawalMedanTarafKategoriFail() {
     });
 }
 
-// Kemas kini rekod fail hanya apabila permohonan Naik Taraf diluluskan.
+
+// FUNCTION: kemaskiniRekodFailNaikTaraf
+// PURPOSE: Mengemaskini rekod asal hanya selepas permohonan diluluskan.
 function kemaskiniRekodFailNaikTaraf(permohonan) {
-    const maklumat = { ...(permohonan?.maklumat || {}), ...(permohonan?.sokongan || {}) };
     const failId = permohonan?.failId;
+    const kemaskini = permohonan?.kemaskini || {};
     if (!failId) return false;
 
     let umum = dapatkanSenaraiFailUmum();
     let peribadi = dapatkanSenaraiFailPeribadi();
+
     const indeksUmum = umum.findIndex(fail => String(fail.id) === String(failId));
     const indeksPeribadi = peribadi.findIndex(fail => String(fail.id) === String(failId));
+
     if (indeksUmum < 0 && indeksPeribadi < 0) {
         console.warn("Rekod fail untuk Naik Taraf tidak dijumpai:", failId);
         return false;
     }
 
     const kategoriAsal = indeksUmum >= 0 ? "umum" : "peribadi";
-    const rekod = { ...(kategoriAsal === "umum" ? umum[indeksUmum] : peribadi[indeksPeribadi]) };
-    const kategoriBaharu = String(maklumat["Kategori Fail"] || kategoriAsal).toLowerCase().includes("peribadi") ? "peribadi" : "umum";
-
-    const pemetaan = {
-        "Taraf Fail": "peringkat",
-        "Tajuk Fail": "tajuk",
-        "Keterangan Fail": "deskripsi",
-        "Lokasi penyimpanan Fail": "lokasi",
-        "Lokasi Fail(Bahagian)": "lokasi",
-        "Keterangan Lokasi": "keteranganLokasi",
-        "Keterangan Lokasi Fail": "keteranganLokasi",
-        "Catatan": "catatan"
+    const rekod = {
+        ...(kategoriAsal === "umum" ? umum[indeksUmum] : peribadi[indeksPeribadi])
     };
-    Object.entries(pemetaan).forEach(([medanBorang, medanRekod]) => {
-        const nilai = maklumat[medanBorang];
-        if (nilai !== undefined && String(nilai).trim() !== "") rekod[medanRekod] = String(nilai).trim();
+
+    const kategoriBaharu = kemaskini.kategori === "peribadi" ? "peribadi" : "umum";
+
+    // KEMASKINI MAKLUMAT REKOD.
+    const pemetaan = {
+        tajuk: "tajuk",
+        peringkat: "peringkat",
+        lokasi: "lokasi",
+        keterangan: "deskripsi",
+        catatan: "catatan"
+    };
+
+    Object.entries(pemetaan).forEach(([medan, medanRekod]) => {
+        if (kemaskini[medan] !== undefined) {
+            rekod[medanRekod] = String(kemaskini[medan]).trim();
+        }
     });
+
     rekod.kategori = kategoriBaharu === "peribadi" ? "Fail Peribadi" : "Fail Umum";
 
-    // Alihkan rekod fail dan jilid bersama-sama jika kategori berubah.
+    // PINDAHKAN REKOD JIKA KATEGORI BERUBAH.
     if (kategoriAsal === "umum") umum.splice(indeksUmum, 1);
     else peribadi.splice(indeksPeribadi, 1);
+
     const jilidUmum = dapatkanSenaraiJilidUmum();
     const jilidPeribadi = dapatkanSenaraiJilidPeribadi();
+
     if (kategoriAsal !== kategoriBaharu) {
         const sumberJilid = kategoriAsal === "umum" ? jilidUmum : jilidPeribadi;
         const sasaranJilid = kategoriBaharu === "umum" ? jilidUmum : jilidPeribadi;
+
         const pindah = sumberJilid.filter(item =>
-            String(item.failId || "") === String(failId) || (!item.failId && item.noFail === rekod.noFail)
+            String(item.failId || "") === String(failId) ||
+            (!item.failId && item.noFail === rekod.noFail)
         );
+
         const kekal = sumberJilid.filter(item => !pindah.includes(item));
+
         pindah.forEach(item => {
             item.kategori = kategoriBaharu === "peribadi" ? "Fail Peribadi" : "Fail Umum";
             if (!sasaranJilid.some(x => x.id === item.id)) sasaranJilid.push(item);
         });
+
         if (kategoriAsal === "umum") jilidUmum.splice(0, jilidUmum.length, ...kekal);
         else jilidPeribadi.splice(0, jilidPeribadi.length, ...kekal);
     }
@@ -502,17 +517,28 @@ function kemaskiniRekodFailNaikTaraf(permohonan) {
     if (kategoriBaharu === "peribadi") peribadi.push(rekod);
     else umum.push(rekod);
 
-    const berjayaFail = simpanSenaraiFailUmum(umum) && simpanSenaraiFailPeribadi(peribadi);
+    // SIMPAN REKOD FAIL.
+    const berjayaFail =
+        simpanSenaraiFailUmum(umum) &&
+        simpanSenaraiFailPeribadi(peribadi);
+
     if (!berjayaFail) return false;
+
+    // SIMPAN JILID JIKA KATEGORI BERUBAH.
     if (kategoriAsal !== kategoriBaharu) {
-        const berjayaJilid = simpanSenaraiJilidUmum(jilidUmum) && simpanSenaraiJilidPeribadi(jilidPeribadi);
+        const berjayaJilid =
+            simpanSenaraiJilidUmum(jilidUmum) &&
+            simpanSenaraiJilidPeribadi(jilidPeribadi);
+
         if (!berjayaJilid) return false;
     }
 
     if (typeof senaraiFailUmum !== "undefined") senaraiFailUmum = umum;
     if (typeof senaraiFailPeribadi !== "undefined") senaraiFailPeribadi = peribadi;
+
     return true;
 }
+
 
 // PAGINATION STANDARD: 15 rekod setiap halaman.
 function paparPagination(tbody, rekod, kunci, fungsiRender, had = 15) {
@@ -662,7 +688,36 @@ function refreshPaparanPermohonan() {
         paparPilihanPemulangan("umum");
         paparPilihanPemulangan("peribadi");
     }
+    
+    // 5. REFRESH PINJAMAN SELECTIONS
+    if (typeof paparJadualPinjaman === "function") {
+       paparJadualPinjaman("umum");
+       paparJadualPinjaman("peribadi");
+   }
 
     console.log("e-FAIL: Semua paparan berkaitan telah dikemaskini.");
+}// RESET SEMUA DATA DEMO E-FAIL
+function resetSemuaDataDemo() {
+    const pengesahan = confirm(
+        "Adakah anda pasti mahu memadam SEMUA data demo e-FAIL?"
+    );
+
+    if (!pengesahan) return;
+
+    const kunciStorage = [
+        "efailFailUmum",
+        "efailFailPeribadi",
+        "efailJilidUmum",
+        "efailJilidPeribadi",
+        "efailUsers",
+        "efailRequests",
+        "efailAuditTrail"
+    ];
+
+    kunciStorage.forEach(kunci => localStorage.removeItem(kunci));
+
+    alert("Semua data demo berjaya dipadam. Sila refresh halaman.");
+
+    location.reload();
 }
 

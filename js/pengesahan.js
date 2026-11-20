@@ -363,7 +363,13 @@ if (
     if (permohonan.jenisTransaksi === "pemulangan" && statusBaharu === "Diluluskan") {
         if (typeof prosesKelulusanPemulangan === "function" && !prosesKelulusanPemulangan(permohonan)) return;
     }
-
+    
+    // PROSES PEMINDAHAN: kemas kini jilid hanya selepas diluluskan.
+    if (permohonan.jenisTransaksi === "pemindahan" && statusBaharu === "Diluluskan") {
+    if (typeof prosesKelulusanPemindahan === "function" &&
+        !prosesKelulusanPemindahan(permohonan)) return;
+    }
+    
     // KEMASKINI STATUS PERMOHONAN DAN SIMPAN IDENTITI PENTADBIR.
     const profilPentadbir = typeof dapatkanProfilPenggunaDemo === "function" ? dapatkanProfilPenggunaDemo() : {};
     permohonan.disahkanOleh = profilPentadbir.nama || "-";
@@ -371,26 +377,22 @@ if (
     permohonan.catatanPentadbir = catatan;
     permohonan.tarikhTindakanPentadbir = new Date().toLocaleString("ms-MY");
 
-    // SIMPAN PERMOHONAN.
-    try {
-        localStorage.setItem(
-            "efailRequests",
-            JSON.stringify(semuaPermohonan)
-        );
+    
+    // SIMPAN PERMOHONAN YANG TELAH DIKEMASKINI.
+    if (!simpanStorageSenarai("efailRequests", semuaPermohonan)) return;
 
-    } catch (error) {
-        console.error("Ralat menyimpan pengesahan:", error);
-        alert("Gagal menyimpan pengesahan: " + error.message);
-        return;
-    }
+    // REFRESH SEMUA PAPARAN BERKAITAN.
+    refreshPaparanPermohonan();
 
-    // REFRESH PAPARAN.
-paparSenaraiPengesahan();
-paparSejarahPermohonan();
+    // TUTUP MODAL.
+    tutupModalPengesahan();
 
-if (!simpanPermohonan(permohonan)) return;
+    alert(
+        statusBaharu === "Diluluskan"
+            ? "Permohonan berjaya diluluskan."
+            : "Permohonan telah ditolak."
+    );
 
-refreshPaparanPermohonan();
 
 // REFRESH NOTIFICATION COUNT
 if (typeof paparNotifikasi === "function") {
