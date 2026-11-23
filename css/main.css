@@ -38,6 +38,8 @@ button{cursor:pointer}
 .topbar__separator{height:34px;width:1px;background:#edf0f5}
 .topbar__user{display:flex;align-items:center;gap:10px}
 .topbar__avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--pale-blue);color:var(--blue);font-weight:bold;font-size:11px}
+.topbar__avatar {overflow: hidden;}
+.topbar__avatar img {width: 100%;height: 100%;object-fit: cover;border-radius: 50%;}
 .topbar__user-name{font-size:11px;line-height:1.5}
 .topbar__user-role{font-size:10px;color:var(--muted)}
 .topbar__chevron{margin-left:3px;color:#647a98}

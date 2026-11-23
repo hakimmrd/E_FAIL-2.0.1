@@ -26,7 +26,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <a class="sidebar__link" href="#pengguna" data-page="pengguna">
         <span class="sidebar__icon"><i class="bi bi-people"></i></span>
         Pengurusan Pengguna
-        <span class="sidebar__arrow">⌄</span>
+        <span class="sidebar__arrow"><i class="bi bi-caret-down-fill"></i></span>
     </a>
 
     <div class="sidebar__submenu">
@@ -46,7 +46,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <a class="sidebar__link" href="javascript:void(0)">
         <span class="sidebar__icon"><i class="bi bi-folder"></i></span>
         Fail Umum
-        <span class="sidebar__arrow">⌄</span>
+        <span class="sidebar__arrow"><i class="bi bi-caret-down-fill"></i></span>
     </a>
 
     <div class="sidebar__submenu sidebar__submenu--level1">
@@ -55,13 +55,13 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         <div class="sidebar__group">
 
             <a class="sidebar__sublink" href="javascript:void(0)">
-                Permohonan
-                <span class="sidebar__arrow">⌄</span>
+                Permohonan Fail
+                <span class="sidebar__arrow"><i class="bi bi-caret-down-fill"></i></span>
             </a>
 
             <div class="sidebar__submenu">
                 <a class="sidebar__sublink" href="#bukafailumum" data-page="buka-umum">
-                    Pembukaan Fail Umum
+                    Pembukaan Fail Baharu
                 </a>
 
                 <a class="sidebar__sublink" href="#jilidbaru" data-page="jilid-baru">
@@ -77,12 +77,12 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
         <!-- PINJAMAN -->
         <a class="sidebar__sublink" href="#permohonan" data-page="permohonan">
-            Pinjaman
+            Pinjaman Fail
         </a>
 
         <!-- PEMULANGAN -->
         <a class="sidebar__sublink" href="#pergerakan" data-page="pergerakan">
-            Pemulangan
+            Pemulangan Fail
         </a>
 
     </div>
@@ -94,7 +94,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <a class="sidebar__link" href="javascript:void(0)">
         <span class="sidebar__icon"><i class="bi bi-person-video2"></i></span>
         Fail Peribadi
-        <span class="sidebar__arrow">⌄</span>
+        <span class="sidebar__arrow"><i class="bi bi-caret-down-fill"></i></span>
     </a>
 
     <div class="sidebar__submenu sidebar__submenu--level1">
@@ -103,13 +103,13 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         <div class="sidebar__group">
 
             <a class="sidebar__sublink" href="javascript:void(0)">
-                Permohonan
-                <span class="sidebar__arrow">⌄</span>
+                Permohonan Fail
+                <span class="sidebar__arrow"><i class="bi bi-caret-down-fill"></i></span>
             </a>
 
             <div class="sidebar__submenu">
                 <a class="sidebar__sublink" href="#bukafailperibadi" data-page="buka-peribadi">
-                    Pembukaan Fail Peribadi
+                    Pembukaan Fail Baharu
                 </a>
 
                 <a class="sidebar__sublink" href="#jilidbarup" data-page="jilid-barup">
@@ -125,12 +125,12 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
         <!-- PINJAMAN -->
         <a class="sidebar__sublink" href="#permohonanp" data-page="permohonanp">
-            Pinjaman
+            Pinjaman Fail
         </a>
 
         <!-- PEMULANGAN -->
         <a class="sidebar__sublink" href="#pergerakanp" data-page="pergerakanp">
-            Pemulangan
+            Pemulangan Fail
         </a>
 
     </div>
@@ -141,18 +141,19 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <a class="sidebar__link" href="#">
         <span class="sidebar__icon"><i class="bi bi-archive"></i></span>
         Pusat Rekod
-        <span class="sidebar__arrow">⌄</span>
+        <span class="sidebar__arrow"><i class="bi bi-caret-down-fill"></i></span>
     </a>
 
     <div class="sidebar__submenu sidebar__submenu--level1">
-        <a class="sidebar__sublink" href="#pelupusan" data-page="pelupusan">
-            <span class="sidebar__icon"><i class="bi bi-trash3"></i></span>
-            Pelupusan
-        </a>
 
         <a class="sidebar__sublink" href="#pemindahan" data-page="pemindahan">
             <span class="sidebar__icon"><i class="bi bi-box-arrow-right"></i></span>
-            Pemindahan
+            Permohonan Pemindahan
+        </a>
+        
+        <a class="sidebar__sublink" href="#pelupusan" data-page="pelupusan">
+            <span class="sidebar__icon"><i class="bi bi-trash3"></i></span>
+            Pelupusan
         </a>
     </div>
 </div>
@@ -239,7 +240,9 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
     <div class="topbar__user">
 
-        <div class="topbar__avatar">NS</div>
+        <div class="topbar__avatar">
+          <img src="profile.jpg" alt="Gambar profil pengguna">
+        </div>
 
         <div class="topbar__user-name">
             Nur Syazwana
