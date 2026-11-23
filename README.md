@@ -1,4 +1,4 @@
-# e-FAIL – Digital File Management System
+# E-FAIL – Digital File Management System
 
 A web-based digital file management system designed to improve file registration, management, borrowing, tracking and administrative processes.
 
