@@ -74,13 +74,22 @@ function ciptaRekodJilid(permohonan) {
         }
     });
 
-    const rekod = {
-        id: "JLD-" + Date.now(), idPermohonan: permohonan.id, failId, noFail,
-        tajuk: maklumat["Tajuk"] || maklumat["Tajuk Fail"] || "",
-        kategori: kategori === "peribadi" ? "Fail Peribadi" : "Fail Umum",
-        jilid: jilidBaharu, statusJilid: "Aktif", statusPinjaman: "Tersedia",
-        peminjam: null, tarikhPinjam: null, tarikhPulang: null,
-        tarikhKelulusan: new Date().toLocaleString("ms-MY")
+   const rekod = {
+    id: "JLD-" + Date.now(),
+    idPermohonan: permohonan.id,
+    failId,
+    noFail,
+    tajuk: maklumat["Tajuk"] || maklumat["Tajuk Fail"] || "",
+    kategori: kategori === "peribadi" ? "Fail Peribadi" : "Fail Umum",
+    jilid: jilidBaharu,
+    lokasi: maklumat["Lokasi Penyimpanan Fail"] || maklumat["Lokasi"] || "",
+    keteranganLokasi: maklumat["Keterangan Lokasi Fail"] || maklumat["Keterangan Lokasi"] || "",
+    statusJilid: "Aktif",
+    statusPinjaman: "Tersedia",
+    peminjam: null,
+    tarikhPinjam: null,
+    tarikhPulang: null,
+    tarikhKelulusan: new Date().toLocaleString("ms-MY")
     };
     senarai.push(rekod);
     if (!simpan(senarai)) throw new Error("Gagal menyimpan rekod jilid.");
@@ -272,6 +281,39 @@ function dapatkanMasterlist() {
         Number(a.jilid) - Number(b.jilid)
     );
 }
+
+// LENGKAPKAN LOKASI JILID SEDIA ADA.
+function lengkapkanLokasiSemuaJilid() {
+    const kategori = [
+        { dapatkanFail: dapatkanSenaraiFailUmum, dapatkanJilid: dapatkanSenaraiJilidUmum, simpanJilid: simpanSenaraiJilidUmum },
+        { dapatkanFail: dapatkanSenaraiFailPeribadi, dapatkanJilid: dapatkanSenaraiJilidPeribadi, simpanJilid: simpanSenaraiJilidPeribadi }
+    ];
+
+    kategori.forEach(kumpulan => {
+        const fail = kumpulan.dapatkanFail();
+        const jilid = kumpulan.dapatkanJilid();
+        let berubah = false;
+
+        jilid.forEach(item => {
+            const failAsal = fail.find(f => String(f.id) === String(item.failId));
+            if (!failAsal) return;
+
+            if (!item.lokasi) {
+                item.lokasi = failAsal.lokasi || "";
+                berubah = true;
+            }
+
+            if (!item.keteranganLokasi) {
+                item.keteranganLokasi = failAsal.keteranganLokasi || "";
+                berubah = true;
+            }
+        });
+
+        if (berubah) kumpulan.simpanJilid(jilid);
+    });
+}
+
+
 
 function normalisasiStatus(status) {
     const statusMap = {

@@ -116,6 +116,7 @@ function isiBorangNaikTaraf(item, kategori) {
     isi("naikTarafJilid", item.jilid);
     isi("naikTarafTajuk", item.tajuk);
     isi("naikTarafPeringkat", item.peringkat);
+    isi("naikTarafSebab", item.sebabKemaskini || "");
     isi("naikTarafKategori", peribadi ? "Fail Peribadi" : "Fail Umum");
     isi("naikTarafLokasi", item.lokasi);
     isi("naikTarafKeterangan", item.keterangan);
@@ -169,13 +170,14 @@ function hantarPermohonanNaikTaraf(form, kategori) {
     const ambil = id => document.getElementById(id + akhiran)?.value.trim() || "";
 
     const kemaskini = {
-        tajuk: ambil("naikTarafTajuk"),
-        peringkat: ambil("naikTarafPeringkat"),
-        kategori: kategori,
-        lokasi: ambil("naikTarafLokasi"),
-        keterangan: ambil("naikTarafKeterangan"),
-        tarikhPengemaskinian: ambil("naikTarafTarikh"),
-        catatan: ambil("naikTarafCatatan")
+    tajuk: ambil("naikTarafTajuk"),
+    peringkat: ambil("naikTarafPeringkat"),
+    sebabKemaskini: ambil("naikTarafSebab"),
+    kategori: kategori,
+    lokasi: ambil("naikTarafLokasi"),
+    keterangan: ambil("naikTarafKeterangan"),
+    tarikhPengemaskinian: ambil("naikTarafTarikh"),
+    catatan: ambil("naikTarafCatatan")
     };
 
     const permohonan = {
@@ -188,6 +190,7 @@ function hantarPermohonanNaikTaraf(form, kategori) {
             "Tajuk Fail Baharu": kemaskini.tajuk,
             "Taraf Fail Asal": item.peringkat,
             "Taraf Fail Baharu": kemaskini.peringkat,
+            "Sebab Kemaskini": kemaskini.sebabKemaskini,
             "Kategori Fail": peribadi ? "Fail Peribadi" : "Fail Umum",
             "Lokasi Baharu": kemaskini.lokasi,
             "Keterangan Baharu": kemaskini.keterangan,

@@ -237,20 +237,24 @@ if (inputNoFail) {
 // ==========================================
 // CLOSE MODAL
 // ==========================================
-
 // FUNCTION: tutupModalPengesahan
-// PURPOSE: Menutup modal pengesahan.
+// PURPOSE: Menutup modal pengesahan dengan selamat.
 function tutupModalPengesahan() {
-
     const modal = document.getElementById("approvalDetailModal");
 
     if (modal) {
+        // Pindahkan fokus keluar sebelum modal disembunyikan.
+        if (modal.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+
         modal.style.display = "none";
         modal.setAttribute("aria-hidden", "true");
     }
 
     permohonanAktifId = null;
 }
+
 
 // ==========================================
 // APPROVE OR REJECT REQUEST

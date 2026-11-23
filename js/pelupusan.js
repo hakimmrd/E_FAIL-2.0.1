@@ -447,28 +447,19 @@ function paparSenaraiPelupusan() {
     }
 
     // Jumlah rekod yang hampir atau telah mencapai tempoh
-    const untukTindakan = susunan.filter(item =>
-        item.kiraan.status === "Hampir Tempoh" ||
-        item.kiraan.status === "Tempoh Dicapai"
-    );
+    const ringkasan = halaman.querySelector(".release-progress__number");
 
-    const ringkasan = halaman.querySelector(
-        ".release-progress__number"
-    );
+if (ringkasan) {
+    ringkasan.innerHTML = `
+        ${jumlahRekod}
+        <span style="font-size:10px;color:var(--muted)">fail/jilid</span>
+    `;
+}
 
-    if (ringkasan) {
-        ringkasan.innerHTML = `
-            ${untukTindakan.length}
-            <span style="font-size:10px;color:var(--muted)">fail/jilid</span>
-        `;
-    }
-
-    const caption = halaman.querySelector(
-        ".release-progress__caption"
-    );
+ const caption = halaman.querySelector(".release-progress__caption");
 
     if (caption) {
-        caption.textContent = "Fail/jilid hampir atau telah mencapai tempoh lima tahun";
+     caption.textContent = "Jumlah keseluruhan jilid tidak aktif dalam pemantauan";
     }
 
     // Maklumat halaman

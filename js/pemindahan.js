@@ -204,6 +204,7 @@ function hantarPermohonanPemindahan(event) {
 // PROSES KELULUSAN PEMINDAHAN
 // ==========================================
 
+
 function prosesKelulusanPemindahan(permohonan) {
     const kategori = permohonan.kategori;
     const jilidId = String(permohonan.jilidId || "");
@@ -224,19 +225,25 @@ function prosesKelulusanPemindahan(permohonan) {
     const dapatkanJilid = kategori === "peribadi" ? dapatkanSenaraiJilidPeribadi : dapatkanSenaraiJilidUmum;
     const simpanJilid = kategori === "peribadi" ? simpanSenaraiJilidPeribadi : simpanSenaraiJilidUmum;
 
+    // Lokasi dan status selepas kelulusan
+    const statusBaharu = "Tidak Aktif";
+    const lokasiBaharu = "Pusat Rekod";
+
+    // Semak jilid tambahan
     const senaraiJilid = dapatkanJilid();
     const indeksJilid = senaraiJilid.findIndex(item => String(item.id) === jilidId);
 
-    // JILID TAMBAHAN
     if (indeksJilid !== -1) {
         const rekod = senaraiJilid[indeksJilid];
-        rekod.statusJilid = maklumat["Status Rekod"];
-        rekod.lokasi = maklumat["Lokasi Baharu"];
-        rekod.tarikhTindakanAkhir = maklumat["Tarikh Tindakan Akhir"];
+
+        rekod.statusJilid = statusBaharu;
+        rekod.lokasi = lokasiBaharu;
+        rekod.tarikhTindakanAkhir = maklumat["Tarikh Tindakan Akhir"] || "";
+
         return simpanJilid(senaraiJilid);
     }
 
-    // JILID ASAL
+    // Semak fail asal
     const senaraiFail = dapatkanFail();
     const indeksFail = senaraiFail.findIndex(item => String(item.id) === jilidId);
 
@@ -246,12 +253,14 @@ function prosesKelulusanPemindahan(permohonan) {
     }
 
     const rekodFail = senaraiFail[indeksFail];
-    rekodFail.statusJilid = maklumat["Status Rekod"];
-    rekodFail.lokasi = maklumat["Lokasi Baharu"];
-    rekodFail.tarikhTindakanAkhir = maklumat["Tarikh Tindakan Akhir"];
+
+    rekodFail.statusJilid = statusBaharu;
+    rekodFail.lokasi = lokasiBaharu;
+    rekodFail.tarikhTindakanAkhir = maklumat["Tarikh Tindakan Akhir"] || "";
 
     return simpanFail(senaraiFail);
 }
+
 
 
 
