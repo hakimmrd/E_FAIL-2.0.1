@@ -1370,4 +1370,48 @@ body.approval-modal-open{overflow:hidden}
     min-width: 20px;
     margin-right: 8px;
 }
+/* EDIT PENGGUNA DIALOG */
+.edit-user-dialog {
+    width: 90%;
+    max-width: 850px;
+    max-height: 90vh;
+    padding: 0;
+    border: none;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 15px 50px rgba(0,0,0,.2);
+    overflow-y: auto;
+}
+
+.edit-user-dialog::backdrop {
+    background: rgba(15,30,50,.6);
+}
+
+.edit-user-dialog .modal-header,
+.edit-user-dialog .modal-footer {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5eaf1;
+}
+
+.edit-user-dialog .modal-body {
+    padding: 24px;
+}
+
+.edit-user-dialog .modal-footer {
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #e5eaf1;
+    border-bottom: none;
+}
+.sidebar__group > .sidebar__submenu {
+    display: none;
+}
+
+.sidebar__group.active > .sidebar__submenu {
+    display: block;
+}
+
 

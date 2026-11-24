@@ -34,3 +34,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Pastikan medan Taraf/Kategori Fail hanya boleh diubah dalam Pendaftaran dan Naik Taraf.
 document.addEventListener("click", function () { if (typeof kawalMedanTarafKategoriFail === "function") kawalMedanTarafKategoriFail(); });
+
+document.querySelectorAll(".sidebar__group > .sidebar__link, .sidebar__group > .sidebar__sublink").forEach(link => {
+    link.addEventListener("click", function (event) {
+        const group = this.closest(".sidebar__group");
+        const submenu = group.querySelector(":scope > .sidebar__submenu");
+
+        if (!submenu) return;
+
+        event.preventDefault();
+
+        const isOpen = group.classList.contains("active");
+
+        // Find sibling groups at the SAME level only
+        const parent = group.parentElement;
+
+        parent.querySelectorAll(":scope > .sidebar__group").forEach(sibling => {
+            if (sibling !== group) {
+                sibling.classList.remove("active");
+            }
+        });
+
+        // Toggle the selected group
+        group.classList.toggle("active", !isOpen);
+    });
+});

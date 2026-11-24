@@ -161,9 +161,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
       <a class="sidebar__link" href="#sejarah" data-page="sejarah"><span class="sidebar__icon"><i class="bi bi-clock-history"></i></span>Sejarah Permohonan</a>
       <a class="sidebar__link" href="#laporan" data-page="laporan"><span class="sidebar__icon"><i class="bi bi-file-earmark-bar-graph"></i></span>Laporan</a>
       <div class="sidebar__divider"></div>
-      <a class="sidebar__link" href="#profil" data-page="profil"><span class="sidebar__icon"><i class="bi bi-person-rolodex"></i></span>Profil Pengguna</a>
-      <a class="sidebar__link" href="#tetapan" data-page="tetapan"><span class="sidebar__icon"><i class="bi bi-gear-fill"></i></span>Tetapan</a>
-      <a class="sidebar__link" href="#keluar" data-page="keluar"><span class="sidebar__icon"><i class="bi bi-power"></i></span>Log Keluar</a>
     </nav>
     <div class="sidebar__bottom"><div class="sidebar__status">Sistem beroperasi</div>e-FAIL 2.0 · Versi 2.0.1</div>
   </aside>
@@ -273,6 +270,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 </div>
       </div>
+ 
     </header>
     <!-- MAIN CONTENT: SYSTEM MODULES -->
     <main class="main">
@@ -331,13 +329,105 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 <!-- MODULE: TETAPAN PENGGUNA -->
 <section class="page" id="page-tetapan-pengguna"><div class="page-heading"><div class="page-heading__left"><div class="page-heading__icon">⚙</div><div><h1 class="page-heading__title">Tetapan Pengguna</h1><div class="page-heading__subtitle">Pengurusan konfigurasi dan tetapan akaun pengguna</div></div></div></div><section class="panel form-panel"><div class="form-panel__title">Tetapan Akaun Pengguna</div><div class="form-panel__desc">Konfigurasi tetapan pengguna sistem.</div><div class="field-grid"><div class="field"><label>Tempoh Sesi Pengguna</label> <select><option>15 Minit</option><option>30 Minit</option><option>60 Minit</option></select></div><div class="field"><label>Status Akaun Lalai</label> <select><option>Aktif</option><option>Tidak Aktif</option></select></div><div class="field"><label>Had Percubaan Log Masuk</label> <input type="number" value="5"></div><div class="field"><label>Tempoh Kunci Akaun (Minit)</label> <input type="number" value="15"></div></div><div class="form-actions"><button class="button button--light">Tetapkan Semula</button> <button class="button">Simpan Tetapan</button></div></section></section>
 
-</section>
+
+<!-- DIALOG: EDIT PENGGUNA -->
+<dialog id="modalEditPengguna" class="edit-user-dialog">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3><i class="bi bi-pencil-square"></i> Edit Maklumat Pengguna</h3>
+            <button type="button" class="btn-close" onclick="document.getElementById('modalEditPengguna').close()">✕</button>
+        </div>
+
+        <form id="formEditPengguna">
+
+            <div class="modal-body">
+                <input type="hidden" id="editPenggunaId">
+
+                <div class="field-grid">
+
+                    <div class="field">
+                        <label>Nama Penuh *</label>
+                        <input type="text" id="editPenggunaNama" required>
+                    </div>
+
+                    <div class="field">
+                        <label>No. Kad Pengenalan *</label>
+                        <input type="text" id="editPenggunaNoKP" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Emel Rasmi *</label>
+                        <input type="email" id="editPenggunaEmel" required>
+                    </div>
+
+                    <div class="field">
+                        <label>No. Telefon</label>
+                        <input type="tel" id="editPenggunaTelefon">
+                    </div>
+
+                    <div class="field">
+                        <label>Jawatan</label>
+                        <input type="text" id="editPenggunaJawatan">
+                    </div>
+
+                    <div class="field">
+                        <label>Bahagian / Seksyen *</label>
+                        <select id="editPenggunaBahagian" required>
+                            <option value="">Pilih Bahagian</option>
+                            <option>SPR</option>
+                            <option>BSM</option>
+                            <option>BKP</option>
+                            <option>BTM</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Peranan Pengguna *</label>
+                        <select id="editPenggunaPeranan" required>
+                            <option value="">Pilih Peranan</option>
+                            <option>Pengguna</option>
+                            <option>Penyelaras</option>
+                            <option>Pentadbir</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Status Pengguna</label>
+                        <select id="editPenggunaStatus">
+                            <option>Aktif</option>
+                            <option>Tidak Aktif</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="button button--light"
+                    onclick="document.getElementById('modalEditPengguna').close()">
+                    Batal
+                </button>
+
+                <button type="submit" class="button">
+                    <i class="bi bi-check-circle"></i> Simpan Perubahan
+                </button>
+            </div>
+
+        </form>
+    </div>
+</dialog>
+
+
+
+
       <!-- MODULE: PROFIL PENGGUNA -->
 <section class="page" id="page-profil">
         <div class="page-heading"><div class="page-heading__left"><div class="page-heading__icon">♙</div><div><h1 class="page-heading__title">Profil Pengguna</h1><div class="page-heading__subtitle">Maklumat Pengguna</div></div></div></div>
         <section class="profile-card"><div class="profile-card__cover"></div><div class="profile-card__body"><div class="profile-card__photo" role="img" aria-label="Gambar profil pengguna" style="display:inline-grid;place-items:center;color:#607b9d;font-size:24px">NS</div><div class="profile-card__name">MUHAMMAD HAKIM BIN YUSNIZAM</div><span class="pill">Pentadbir</span><div class="profile-badges"><div class="profile-badge">🏅<strong>Pengguna Berdaftar</strong></div><div class="profile-badge">▣<strong>SPR</strong></div><div class="profile-badge">▦<strong>Aktif</strong></div></div><div class="profile-card__meta">Jabatan Perdana Menteri<br>Bahagian Pentadbiran Am</div></div><div class="profile-card__details"><h3>PERTANTANGAN</h3><p>Jabatan Perdana Menteri<br>Maklumat pengguna dan pengesahan akaun<br>✓ Akaun pengguna telah disahkan</p></div></section>
       </section>
 
+      
      <!-- MODULE: NAIK TARAF -->
 
 <!-- MODULE: PENGEMASKINIAN FAIL UMUM -->
