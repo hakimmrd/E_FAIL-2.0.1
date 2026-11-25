@@ -24,13 +24,14 @@
     pendaftaran: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     penutupan: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     pelupusan: ['Pentadbir', 'Penyelaras'],
-    pemindahan: ['Pentadbir', 'Penyelaras'],
+    pemindahan: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     sejarah: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     laporan: ['Pentadbir', 'Penyelaras'],
     profil: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     tetapan: ['Pengguna', 'Pentadbir', 'Penyelaras'],
     keluar: ['Pengguna', 'Pentadbir', 'Penyelaras']
   };
+  
 
   // These modules are view-only for Penyelaras, as specified in the access matrix.
   const VIEW_ONLY_FOR_COORDINATOR = [
@@ -133,7 +134,15 @@
     const roleLabel = document.querySelector('.topbar__user-role');
     if (roleLabel) roleLabel.textContent = 'Ujian peranan · ' + role;
     const avatar = document.querySelector('.topbar__avatar');
-    if (avatar) avatar.textContent = role === 'Pentadbir' ? 'PT' : role === 'Penyelaras' ? 'PY' : 'PG';
+    if (avatar) {
+    const profileImage = avatar.querySelector('img');
+
+    if (!profileImage) {
+        avatar.textContent =
+            role === 'Pentadbir' ? 'PT' :
+            role === 'Penyelaras' ? 'PY' : 'PG';
+    }
+}
 
     const current = getCurrentPage();
     if (!canAccess(current, role)) showPage('dashboard');

@@ -59,3 +59,26 @@ document.querySelectorAll(".sidebar__group > .sidebar__link, .sidebar__group > .
         group.classList.toggle("active", !isOpen);
     });
 });
+
+
+function aktifkanTooltipJilidUmum() {
+
+    const modal = document.getElementById("modalJilidUmum");
+
+    if (!modal || typeof bootstrap === "undefined") {
+        console.error("Modal atau Bootstrap JS tidak dijumpai.");
+        return;
+    }
+
+    modal.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(element => {
+
+        bootstrap.Tooltip.getOrCreateInstance(element, {
+            container: modal,
+            placement: "top",
+            trigger: "hover focus",
+            boundary: "window"
+        });
+
+    });
+}
+

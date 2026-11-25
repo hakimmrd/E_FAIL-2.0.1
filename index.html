@@ -138,7 +138,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 <!-- MAIN MODULE: PUSAT REKOD -->
 <div class="sidebar__group">
-    <a class="sidebar__link" href="#">
+    <a class="sidebar__link" href="#pusatrekod">
         <span class="sidebar__icon"><i class="bi bi-archive"></i></span>
         Pusat Rekod
         <span class="sidebar__arrow"><i class="bi bi-caret-down-fill"></i></span>
@@ -175,6 +175,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         <div><div class="topbar__title">SISTEM E-FAIL 2.0</div><div class="topbar__subtitle">Pengurusan Rekod PAJPM | Pentadbiran Am, JPM</div></div>
       </div>
       <div class="topbar__right">
+        <!-- demo role control -->   
         <div class="demo-role-control">
           <label for="demoRoleSelect"><i class="bi bi-shield-lock"></i> Uji peranan</label>
           <select id="demoRoleSelect" aria-label="Pilih peranan untuk ujian">
@@ -288,7 +289,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         </div>
         <div class="dashboard-grid">
           <div class="dashboard-left">
-            <section class="warning"><div class="warning__title"><span>⚠</span> Peringatan dan Tindakan</div><div class="warning__line"><span class="pill pill--orange">Perhatian</span>45 fail telah atau hampir mencapai tempoh tindakan pelupusan. <b style="color:#bd6a00">›</b></div><div class="warning__line"><span class="pill">Makluman</span>32 permohonan pinjaman fail masih belum selesai.</div></section>
+            <section class="warning"><div class="warning__title"><span>⚠</span> Peringatan dan Tindakan</div><div class="warning__line"><span class="pill pill--orange">Perhatian</span>45 fail telah atau hampir mencapai tempoh tindakan pelupusan. <b style="color:#bd6a00"></b></div><div class="warning__line"><span class="pill">Makluman</span>32 permohonan pinjaman fail masih belum selesai.</div></section>
             <section class="panel">
               <div class="panel__header">
                 <div class="panel__title"><span class="panel__title-icon">▥</span>Ringkasan Mengikut Bahagian</div>
@@ -424,8 +425,9 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
       <!-- MODULE: PROFIL PENGGUNA -->
 <section class="page" id="page-profil">
         <div class="page-heading"><div class="page-heading__left"><div class="page-heading__icon">♙</div><div><h1 class="page-heading__title">Profil Pengguna</h1><div class="page-heading__subtitle">Maklumat Pengguna</div></div></div></div>
-        <section class="profile-card"><div class="profile-card__cover"></div><div class="profile-card__body"><div class="profile-card__photo" role="img" aria-label="Gambar profil pengguna" style="display:inline-grid;place-items:center;color:#607b9d;font-size:24px">NS</div><div class="profile-card__name">MUHAMMAD HAKIM BIN YUSNIZAM</div><span class="pill">Pentadbir</span><div class="profile-badges"><div class="profile-badge">🏅<strong>Pengguna Berdaftar</strong></div><div class="profile-badge">▣<strong>SPR</strong></div><div class="profile-badge">▦<strong>Aktif</strong></div></div><div class="profile-card__meta">Jabatan Perdana Menteri<br>Bahagian Pentadbiran Am</div></div><div class="profile-card__details"><h3>PERTANTANGAN</h3><p>Jabatan Perdana Menteri<br>Maklumat pengguna dan pengesahan akaun<br>✓ Akaun pengguna telah disahkan</p></div></section>
-      </section>
+        <section class="profile-card"><div class="profile-card__cover"></div><div class="profile-card__body"><div class="profile-card__photo">
+        <img src="profile.jpg" alt="Gambar profil pengguna"></div><div class="profile-card__name">MUHAMMAD HAKIM BIN YUSNIZAM</div><span class="pill">Pentadbir</span><div class="profile-badges"><div class="profile-badge">🏅<strong>Pengguna Berdaftar</strong></div><div class="profile-badge">▣<strong>SPR</strong></div><div class="profile-badge">▦<strong>Aktif</strong></div></div><div class="profile-card__meta">Jabatan Perdana Menteri<br>Bahagian Pentadbiran Am</div></div><div class="profile-card__details"><h3>PERTANTANGAN</h3><p>Jabatan Perdana Menteri<br>Maklumat pengguna dan pengesahan akaun<br>✓ Akaun pengguna telah disahkan</p></div></section>
+</section>
 
       
      <!-- MODULE: NAIK TARAF -->
@@ -570,7 +572,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
       <!-- MODULE: PEMBUKAAN FAIL UMUM -->
 <section class="page" id="page-buka-umum">
         <div class="page-heading"><div class="page-heading__left"><div class="page-heading__icon"><i class="bi bi-file-earmark-plus-fill"></i></div><div><h1 class="page-heading__title">Modul Pembukaan Fail Umum</h1><div class="page-heading__subtitle">Pembukaan fail baharu dalam sistem</div></div></div><button class="button button--light"data-go="laporan">☷ Senarai Fail</button></div>
-        <div class="content-columns"><section class="panel form-panel"><div class="form-panel__title"><i class="bi bi-file-earmark-plus-fill"></i>Borang Pembukaan Fail</div><div class="form-panel__desc">Lengkapkan maklumat fail untuk pendaftaran baharu.</div><form class="field-grid" id="formPendaftaran"><div class="field field--full"><label>Maklumat Pemohon *</label><input placeholder="" required><label>Deskripsi Fail *</label><input placeholder="" required><div class="field"><label>Bahagian / Seksyen *</label><select><option>Pilih Bahagian / Seksyen</option><option>SPR - Seksyen Pengurusan Rekod</option><option>BSM - Bahagian Sumber Manusia</option></select></div><div class="field"><label>Tarikh Permohonan *</label><input type="date" value="2026-11-03"></div><div class="field field--full"><label>Maklumat Pemohon *</label><input placeholder="" required></div><div class="field"><label>Peringkat Fail *</label><select><option>Terbuka</option><option>Terhad</option><option>Sulit</option><option>Rahsia</option><option>Rahsia Besar</option></select></div><div class="field field--full"><label>Tajuk Fail *</label><input placeholder="Masukkan tajuk fail"required></div><div class="field"><label>Lokasi Penyimpanan Fail *</label><select><option>Pilih Bahagian / Seksyen</option><option>SPR - Seksyen Pengurusan Rekod</option><option>BSM - Bahagian Sumber Manusia</option></select></div><div class="field field--full"><label>Keterangan Lokasi Fail</label><input placeholder="Keterangan Lokasi Fail (jika ada)"></div></form><div class="form-actions">
+        <div class="content-columns"><section class="panel form-panel"><div class="form-panel__title"><i class="bi bi-file-earmark-plus-fill"></i>Borang Pembukaan Fail</div><div class="form-panel__desc">Lengkapkan maklumat fail untuk pendaftaran baharu.</div><form class="field-grid" id="formPendaftaran"><div class="field field--full"><label>Maklumat Pemohon *</label><input placeholder="" required><div class="field"><label>Bahagian / Seksyen *</label><select><option>Pilih Bahagian / Seksyen</option><option>SPR - Seksyen Pengurusan Rekod</option><option>BSM - Bahagian Sumber Manusia</option></select></div><div class="field field--full"><label>Tajuk Fail *</label><input placeholder="Masukkan tajuk fail"required></div><div class="field field--full"><label>Deskripsi Fail *</label><input placeholder="Masukkan Deskripsi fail"required></div><div class="field"><label>Peringkat Fail *</label><select><option>Terbuka</option><option>Terhad</option><option>Sulit</option><option>Rahsia</option><option>Rahsia Besar</option></select></div><div class="field"><label>Tarikh Permohonan *</label><input type="date" value="2026-11-03"></div><div class="field"><label>Lokasi Penyimpanan Fail *</label><select><option>Pilih Bahagian / Seksyen</option><option>SPR - Seksyen Pengurusan Rekod</option><option>BSM - Bahagian Sumber Manusia</option></select></div><div class="field field--full"><label>Keterangan Lokasi Fail</label><input placeholder="Keterangan Lokasi Fail (jika ada)"></div></form><div class="form-actions">
 
     <button
         type="reset"
@@ -694,14 +696,51 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     </select>
 </div>
             </div>
-            <div class="jp-form-section">
-                <h3>Maklumat Penutupan Fail</h3>
-                <div class="jp-form-grid">
-                    <div class="field"><label for="jpbilanganlampiranUmum">Bilangan Lampiran*</label><input id="jpbilanganlampiranUmum" required></div>
-                    <div class="field"><label for="jpdatefirstcontentUmum">Tarikh Kandungan Pertama*</label> <input type="date" id="jpdatefirstcontentUmum" required></div>
-                    <div class="field"><label for="jpdatelastcontentUmum">Tarikh Kandungan Terakhir*</label><input type="date" id="jpdatelastcontentUmum" required></div>
-                </div>
-            </div>
+            
+<div class="jp-form-section">
+    <h3>Maklumat Penutupan Fail</h3>
+
+    <div class="jp-form-grid">
+
+        <div class="field">
+            <label for="jpbilanganlampiranUmum">
+                Bilangan Lampiran*
+                <i class="bi bi-info-circle-fill text-primary ms-1"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="Sila Rujuk Maklumat Pada Fail Jilid Sebelum.">
+                </i>
+            </label>
+            <input id="jpbilanganlampiranUmum" required>
+        </div>
+
+        <div class="field">
+            <label for="jpdatefirstcontentUmum">
+                Tarikh Kandungan Pertama*
+                <i class="bi bi-info-circle-fill text-primary ms-1"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="Sila Rujuk Maklumat Pada Fail Jilid Sebelum.">
+                </i>
+            </label>
+            <input type="date" id="jpdatefirstcontentUmum" required>
+        </div>
+
+        <div class="field">
+            <label for="jpdatelastcontentUmum">
+                Tarikh Kandungan Terakhir*
+                <i class="bi bi-info-circle-fill text-primary ms-1"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="Sila Rujuk Maklumat Pada Fail Jilid Sebelum.">
+                </i>
+            </label>
+            <input type="date" id="jpdatelastcontentUmum" required>
+        </div>
+
+    </div>
+</div>
+
              <div class="jp-form-section">
                 <h3>Maklumat Pemohon</h3>
                 <div class="jp-form-grid">
@@ -1310,7 +1349,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         </div>
       </dialog>
 
-      <footer class="footer"><span>© 2026 Jabatan Perdana Menteri. Hak cipta terpelihara.</span><a href="#">ⓘ　Bantuan Pengguna</a></footer>
+      <footer class="footer"><span>© 2026 Jabatan Perdana Menteri. Hak cipta terpelihara.</span><a href="documents/ManualPengguna.pdf"
+   target="_blank">ⓘ　Bantuan Pengguna</a></footer>
   </div>
 </div>
 <!-- JAVASCRIPT: LOAD SHARED HELPERS BEFORE MODULE SCRIPTS -->
